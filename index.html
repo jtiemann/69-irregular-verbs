@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>69 Irregular Verbs</title>
+    <!-- Modern Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Ramda for Functional Programming -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.29.1/ramda.min.js"></script>
+    <!-- RxJS for Reactive Programming -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/7.8.1/rxjs.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="app-background"></div>
+    <header>
+        <div class="header-container">
+            <h1>🇩🇪 Top 69 Irregular Verbs</h1>
+            <nav id="nav-tabs">
+                <button data-tab="list" class="tab-btn active">List</button>
+                <button data-tab="learn" class="tab-btn">Learn</button>
+                <button data-tab="test" class="tab-btn">Test</button>
+                <button data-tab="review" class="tab-btn">Review</button>
+            </nav>
+        </div>
+    </header>
+
+    <main id="app-root">
+        <!-- Views will be dynamically inserted here via RxJS subscriptions -->
+    </main>
+
+    <!-- VIEWS TEMPLATES -->
+
+    <template id="tpl-list">
+        <div class="list-view view-container animate-fade-in">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Search for a verb..." autocomplete="off">
+            </div>
+            <div class="table-wrapper">
+                <table class="verb-table">
+                    <thead>
+                        <tr>
+                            <th>Infinitive</th>
+                            <th>Präteritum</th>
+                            <th>Partizip II</th>
+                        </tr>
+                    </thead>
+                    <tbody id="verb-tbody">
+                        <!-- Rows rendered via Ramda -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-learn">
+        <div class="learn-view view-container animate-fade-in">
+            <div class="controls">
+                <button id="btn-prev" class="icon-btn" title="Previous">←</button>
+                <span id="card-counter" class="counter">0 / 69</span>
+                <button id="btn-next" class="icon-btn" title="Next">→</button>
+                <div class="spacer"></div>
+                <button id="btn-toggle-examples-learn" class="icon-btn outline" title="Toggle Examples"
+                    style="margin-right: 0.5rem;">📖 Ex.</button>
+                <button id="btn-shuffle" class="icon-btn outline" title="Shuffle Deck">🔀 Shuffle</button>
+            </div>
+
+            <div class="flashcard-scene" id="flashcard-scene">
+                <div class="flashcard" id="flashcard">
+                    <div class="card-face card-front">
+                        <span class="card-label">Infinitive</span>
+                        <h2 id="fc-inf" class="verb-text"></h2>
+                        <p id="fc-ex-inf" class="example-text hidden"
+                            style="margin-top: -0.5rem; color: rgba(255,255,255,0.7);"></p>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="back-content">
+                            <span class="card-label">Präteritum</span>
+                            <h2 id="fc-praet" class="verb-text"></h2>
+                            <p id="fc-ex-praet" class="example-text hidden" style="margin-top: -0.5rem;"></p>
+
+                            <div class="divider"></div>
+
+                            <span class="card-label">Partizip II</span>
+                            <h2 id="fc-part" class="verb-text"></h2>
+                            <p id="fc-ex-part" class="example-text hidden" style="margin-top: -0.5rem;"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="hint-text">Click the card to reveal the translation</p>
+        </div>
+    </template>
+
+    <template id="tpl-test">
+        <div class="test-view view-container animate-fade-in">
+            <div class="score-container">
+                <div class="score-badge">Score: <span id="test-score">0</span> / <span id="test-total">10</span></div>
+            </div>
+
+            <div class="test-box" id="test-box-active">
+                <h2 id="test-verb-inf" class="test-heading"></h2>
+
+                <div class="input-group">
+                    <label for="input-praet">Präteritum</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="input-praet" autocomplete="off" spellcheck="false"
+                            placeholder="Past tense">
+                        <button type="button" class="mic-btn" id="mic-praet" title="Speak Präteritum">🎤</button>
+                        <span id="feedback-praet" class="feedback-icon" style="right: 50px;"></span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="input-part">Partizip II</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="input-part" autocomplete="off" spellcheck="false"
+                            placeholder="Past participle">
+                        <button type="button" class="mic-btn" id="mic-part" title="Speak Partizip II">🎤</button>
+                        <span id="feedback-part" class="feedback-icon" style="right: 50px;"></span>
+                    </div>
+                </div>
+
+                <div class="test-actions">
+                    <button id="btn-check" class="primary-btn">Check Answer</button>
+                    <button id="btn-next-test" class="secondary-btn hidden">Next Verb →</button>
+                </div>
+            </div>
+
+            <div class="test-box hidden" id="test-box-done" style="text-align: center;">
+                <h2>Test Complete!</h2>
+                <div class="score-badge" style="margin: 2rem auto; display: inline-block;">Final Score: <span
+                        id="final-score">0</span> / 10</div>
+                <p>Check the Review tab to see your mistakes.</p>
+                <div class="test-actions" style="justify-content: center;">
+                    <button id="btn-restart-test" class="primary-btn" style="flex: 0 1 auto; padding: 1rem 2rem;">Start
+                        New Test</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tpl-review">
+        <div class="review-view view-container animate-fade-in">
+            <div class="test-heading" style="margin-bottom: 1rem;">Test Review</div>
+            <div class="table-wrapper">
+                <table class="verb-table" id="review-table">
+                    <thead>
+                        <tr>
+                            <th>Infinitive</th>
+                            <th>Your Präteritum</th>
+                            <th>Your Partizip II</th>
+                        </tr>
+                    </thead>
+                    <tbody id="review-tbody">
+                        <!-- Review Rows rendered via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </template>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
