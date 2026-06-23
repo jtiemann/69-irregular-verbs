@@ -24,25 +24,13 @@ This project is built purely with vanilla web technologies and lightweight CDN d
 
 ## How to Run
 
-Because this app uses ES6 Modules (or uses browser APIs that require a secure context like the Web Speech API), it is best run through a local HTTP server rather than opening the `index.html` file directly from your file system.
+Clone the repository and open `index.html` directly in your browser — no server or build step required.
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/jtiemann/69-irregular-verbs.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd "69-irregular-verbs"
-   ```
-3. Start a local server. If you have Node.js installed, you can use `npx`:
-   ```bash
-   npx serve .
-   ```
-   Or, if you use Python:
-   ```bash
-   python -m http.server 3000
-   ```
-4. Open your browser and go to `http://localhost:3000`
+```bash
+git clone https://github.com/jtiemann/69-irregular-verbs.git
+```
+
+An internet connection is required to load RxJS and Ramda from CDN.
 
 ## Disclaimer
 The Web Speech API requires microphone permissions and relies on the browser's implementation. It works best in Chrome, Edge, and Safari.

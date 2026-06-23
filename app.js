@@ -594,6 +594,8 @@ function initTestView() {
     const subMicPraet = setupSpeech(micPraet, inputPraet);
     const subMicPart = setupSpeech(micPart, inputPart);
 
+    const subRestart = fromEvent(btnRestartTest, 'click').subscribe(() => restartTest());
+
     viewSubscriptions.push(subVerbUpdate, subScoreUpdate, subCheck, subNextQuestion, subRestart, subMicPraet, subMicPart);
 }
 
